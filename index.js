@@ -1,15 +1,16 @@
+
 // Conexion a firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyAGOBHiDPoofC6oUW4Z2H2PPIS4zzstz_M",
-  authDomain: "example-js-aa7d6.firebaseapp.com",
-  databaseURL: "https://example-js-aa7d6.firebaseio.com",
-  projectId: "example-js-aa7d6",
-  storageBucket: "example-js-aa7d6.appspot.com",
-  messagingSenderId: "767307363369",
-  appId: "1:767307363369:web:1e2e3055de932383a29838",
+  apiKey: "AIzaSyDPoYyORxac0mgrXCj7qdJ1485QBpC8MNc",
+  authDomain: "baseballteammanager-539be.firebaseapp.com",
+  projectId: "baseballteammanager-539be",
+  storageBucket: "baseballteammanager-539be.appspot.com",
+  messagingSenderId: "663442234546",
+  appId: "1:663442234546:web:e7c28f8ecdf40ab8c57dab"
 };
 var app = firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore(app);
+
 // helper para crear elemetos y adirle atributos
 function myCreateAttr(element, attributes) {
   return Object.keys(attributes).reduce((addedAttr, key) => {
@@ -17,6 +18,7 @@ function myCreateAttr(element, attributes) {
     return addedAttr;
   }, element);
 }
+
 // manejador de radioInput
 let team = "teamA";
 const radioInput = (e) => {
@@ -25,7 +27,6 @@ const radioInput = (e) => {
 
 function addPlayerToTeam() {
   const input = document.getElementById("playerName");
-  //   console.log(team);
   if (input.value != "") {
     db.collection(team)
       .add({
@@ -43,6 +44,7 @@ function addPlayerToTeam() {
     alertAction("danger", "El nombre no puede estar vacio");
   }
 }
+
 // inserta una alerta  con color y mensaje persanalizable
 const players = { teamA: [], teamL: [] };
 function alertAction(type, massage, time = 3000) {
@@ -62,6 +64,7 @@ function alertAction(type, massage, time = 3000) {
   dataTableUdate("teamL");
   dataTableUdate();
 }
+
 // manejador de checkbox
 function playersSelected(e, id) {
   let playerSelected;
@@ -79,6 +82,7 @@ function playersSelected(e, id) {
     playerSelected.splice(index, 1);
   }
 }
+
 // mover los jugadores seleccionados de un equipo a otro
 function movePlayersSelected(e) {
   let idsArray, teamLocation, teamC;
@@ -90,9 +94,9 @@ function movePlayersSelected(e) {
     idsArray = players.teamA;
     teamLocation = "teamA";
   }
+
   //   const collectins = db.collection(e.target.value);
   idsArray.forEach((id) => {
-    // console.log(idsArray);
     db.collection(teamLocation)
       .doc(id)
       .get()
@@ -116,10 +120,10 @@ function movePlayersSelected(e) {
       });
   });
 }
+
 // removedor de jugadores
 function playerRemover(id, data, location, massage, time, type = "success") {
   let count = data.findIndex((index) => index === id);
-  //   console.log(count);
   db.collection(location)
     .doc(id)
     .delete()
@@ -127,14 +131,13 @@ function playerRemover(id, data, location, massage, time, type = "success") {
       if (count >= data.length - 1) {
         alertAction(type, massage, time);
       }
-      //   console.log(count, data.length - 1);
       count++;
-      // console.log("Document successfully deleted!");
     })
     .catch((error) => {
       console.error("Error removing document: ", error);
     });
 }
+
 // mover todos los jugadores de u lugar a otro
 function moveAllPlayers(e) {
   const seurce = e.target.value === "allToA" ? "teamL" : "teamA";
@@ -166,6 +169,7 @@ function moveAllPlayers(e) {
       console.log(error);
     });
 }
+
 // actuliza la tabla
 function dataTableUdate(team = "teamA") {
   const idTable = team === "teamA" ? "teamA" : "teamL";
